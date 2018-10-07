@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 });
 
 // API
+app.use('/api/auth', require('./api/auth'));
 
 // Server
 const port = 3000;
