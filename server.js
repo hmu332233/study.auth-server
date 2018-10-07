@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
 // API
 app.use('/api/auth', require('./api/auth'));
+app.use('/api/users', require('./api/users'));
 
 // Server
 const port = 3000;

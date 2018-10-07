@@ -3,6 +3,16 @@ var router = express.Router();
 var User = require('../models/User');
 var util = require('../util');
 
+// private functions
+const checkPermission = (req, res, next) => { //*
+  User.findOne({username:req.params.username}, (err,user) => {
+    if(err||!user) return res.json(util.successFalse(err));
+    else if(!req.decoded || user._id != req.decoded._id) 
+      return res.json(util.successFalse(null,'You don\'t have permission'));
+    else next();
+  });
+}
+
 // index
 router.get('/', util.isLoggedin, (req, res, next) => {
   User.find({})
@@ -62,13 +72,3 @@ router.delete('/:username', util.isLoggedin, checkPermission, (req,res,next) => 
 });
 
 module.exports = router;
-
-// private functions
-const checkPermission = (req, res, next) => { //*
-  User.findOne({username:req.params.username}, (err,user) => {
-    if(err||!user) return res.json(util.successFalse(err));
-    else if(!req.decoded || user._id != req.decoded._id) 
-      return res.json(util.successFalse(null,'You don\'t have permission'));
-    else next();
-  });
-}
